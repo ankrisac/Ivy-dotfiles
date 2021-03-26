@@ -19,4 +19,5 @@
 !.config/ranger/rc.conf
 !.config/nvim/init.vim
 
-!.themes/Ivy
+!.themes/Ivy/*
+
