@@ -1,0 +1,145 @@
+# i3 config file (v4)
+
+
+# Decoration
+font pango:JetBrains Mono 8
+gaps inner 10 gaps outer 0
+gaps top 18
+new_window pixel 2
+
+
+# Floating management
+
+for_window [class="Pavucontrol"] floating enable
+
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+
+
+# Input
+exec --no-startup-id xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Tapping Enabled" 1
+exec_always --no-startup-id xmodmap ~/.xmodmap
+
+# IDK
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id nm-applet
+
+# Restart Picom
+exec_always --no-startup-id picom -b --experimental-backends
+
+# Polybar
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+
+
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume 	exec --no-startup-id pactl set-sink-volume 	@DEFAULT_SINK@ +10% 	&& $refresh_i3status
+bindsym XF86AudioLowerVolume 	exec --no-startup-id pactl set-sink-volume 	@DEFAULT_SINK@ -10% 	&& $refresh_i3status
+bindsym XF86AudioMute 		exec --no-startup-id pactl set-sink-mute 	@DEFAULT_SINK@ toggle 	&& $refresh_i3status
+bindsym XF86AudioMicMute 	exec --no-startup-id pactl set-source-mute 	@DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+
+
+# Program Shortcuts
+bindsym Mod4+f exec "rofi -modi drun,run -show drun"
+bindsym Mod4+r exec "rofi -show run"
+
+bindsym Shift+Print exec flameshot gui
+bindsym Mod4+Control+t exec i3-sensible-terminal
+
+
+
+# Window Management
+
+# Layout
+bindsym Mod4+F1 mode "workspace"
+bindsym Mod4+F2 mode "resize"
+bindsym Mod4+F3 fullscreen toggle
+bindsym Mod4+F4 kill
+
+bindsym Mod4+h split h
+bindsym Mod4+v split v
+
+bindsym Mod4+t layout tabbed
+bindsym Mod4+e layout toggle split
+
+# bindsym Mod4+s layout stacking
+# bindsym Mod4+w layout tabbed
+
+# Floating
+floating_modifier Mod1
+bindsym Mod4+a focus parent
+#bindsym Mod4+d focus child
+bindsym Mod4+space focus mode_toggle
+bindsym Mod4+Shift+space floating toggle
+
+# Move Window focus
+bindsym Mod4+Left focus left
+bindsym Mod4+Down focus down
+bindsym Mod4+Up focus up
+bindsym Mod4+Right focus right
+
+# Move window
+bindsym Mod4+Shift+Left move left
+bindsym Mod4+Shift+Down move down
+bindsym Mod4+Shift+Up move up
+bindsym Mod4+Shift+Right move right
+
+
+
+# Workspace
+bindsym Mod4+Shift+Tab workspace prev
+bindsym Mod4+Tab workspace next
+
+bindsym Mod4+Control+Left move container to workspace prev
+bindsym Mod4+Control+Right move container to workspace next
+
+set $ws_1 "1"
+set $ws_2 "2"
+set $ws_3 "3"
+set $ws_4 "4"
+set $ws_5 "5"
+set $ws_6 "6"
+set $ws_7 "7"
+set $ws_8 "8"
+set $ws_9 "9"
+
+
+# Session manager
+bindsym Mod4+Control+c reload
+bindsym Mod4+Control+r restart
+bindsym Mod4+Control+Escape exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+mode "workspace" {
+	bindsym Left 	move container to workspace prev
+	bindsym Right 	move container to workspace next
+
+	bindsym 1 move container to workspace number $ws_1
+	bindsym 2 move container to workspace number $ws_2
+	bindsym 3 move container to workspace number $ws_3
+	bindsym 4 move container to workspace number $ws_4
+	bindsym 5 move container to workspace number $ws_5
+	bindsym 6 move container to workspace number $ws_6
+	bindsym 7 move container to workspace number $ws_7
+	bindsym 8 move container to workspace number $ws_8
+	bindsym 9 move container to workspace number $ws_9
+
+	bindsym Escape 	mode "default"
+	bindsym Mod4+F1 mode "default
+}
+
+mode "resize" {
+        bindsym Left        resize shrink width 2 px or 2 ppt
+        bindsym Down        resize grow height 2 px or 2 ppt
+        bindsym Up          resize shrink height 2 px or 2 ppt
+        bindsym Right       resize grow width 2 px or 2 ppt
+
+        bindsym Escape 	mode "default"
+	bindsym Mod4+F2 mode "default"
+}
