@@ -1,9 +1,12 @@
 *
 !.gitignore
+!.gitconfig
 
 !.xmodmap
-
 !.bashrc
+
+!.install.sh
+
 !.config/kitty/kitty.conf
 
 !.config/i3/config
